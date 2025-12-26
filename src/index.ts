@@ -59,7 +59,6 @@ client.once("ready", async () => {
     console.log(`Logged in as ${client.user?.tag}`);
 
     // Registering commands
-
     const data: Record<string, any>[] = [
         { name: "change-mode", description: "[Admin Only] Enable or disable development mode", options: [] }
     ];
@@ -119,16 +118,17 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => { 
     const command: ButtonCommand = JSON.parse(customId);
     const { data } = command;
     const actionName = data.action;
-    const flags: number = data.flags || 0;
-    console.log(`Flags: ${flags}`);
-    console.log(data.action);
 
-    if (data.defer !== false) {
+    const action: Action<ButtonInteraction> = actions.button[actionName];
+    const flags = action.data.flags || 0;
+    const defer = action.data.defer || true;
+
+    if (defer) {
         await interaction.deferReply({ flags });
     }
 
 
-    const action: Action<ButtonInteraction> = actions.button[actionName];
+    
     if (!action) {
         console.error(`Action ${actionName} not found`);
         await interaction.followUp("This action does not exist!");
