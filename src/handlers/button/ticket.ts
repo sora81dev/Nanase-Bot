@@ -6,8 +6,9 @@ import { Action } from "../../types/action";
 
 export default {
     data: {
-        action: "ticket",
-        flags: MessageFlags.Ephemeral
+        action: "ticket-open",
+        flags: MessageFlags.Ephemeral,
+        defer: true,
     },
 
     async execute(interaction: ButtonInteraction) {

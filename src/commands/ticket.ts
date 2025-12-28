@@ -56,6 +56,9 @@ export default {
         }
 
         // 認証関連をここに実装。実行できる人は限られる想定
+        const roles = interaction.member?.roles;
+        // console.log(roles);
+
 
         try {
             const moderatorId = botConfig.role.moderatorId;
