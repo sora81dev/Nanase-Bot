@@ -8,6 +8,8 @@ import {
 } from "discord.js";
 import { Command, ModalCommand, ButtonCommand } from "./types/command.js";
 import { Action, Actions } from "./types/action";
+import { handleVcJoin } from "./handlers/events/vc-join";
+import { handleVcLeave } from "./handlers/events/vc-leave";
 import dotenv from "dotenv";
 import fs from "fs";
 
@@ -40,7 +42,7 @@ console.log("");
 
 console.log("Fetching handlers...");
 
-const folders = fs.readdirSync(`${BASE_DIR}/handlers`);
+const folders = ["button", "modal"];
 for (const folder of folders) {
   const actionFiles = fs
     .readdirSync(`${BASE_DIR}/handlers/${folder}`)
@@ -49,8 +51,10 @@ for (const folder of folders) {
 
   for (const file of actionFiles) {
     const path = `./handlers/${folder}/${file}`;
+    console.log(`    Path: ${path}`);
     const action = require(path).default as Action<any>;
-    console.warn(`    Load: ${action.data.action}`);
+    console.log(action);
+    console.log(`    Load: ${action.data.action}`);
 
     actions[folder][action.data.action] = action;
   }
@@ -149,9 +153,8 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
 
   const action: Action<ButtonInteraction> = actions.button[actionName];
   const flags = action.data.flags || 0;
-  const defer = action.data.defer || true;
 
-  if (defer) {
+  if (action.data.defer) {
     await interaction.deferReply({ flags });
   }
 
@@ -192,7 +195,7 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
   const action: Action<ModalSubmitInteraction> = actions.modal[actionName];
   const flags: number = action.data.flags || 0;
 
-  if (action.data.defer !== false) {
+  if (action.data.defer) {
     await interaction.deferReply({ flags });
   }
   if (!action) {
@@ -221,6 +224,9 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
     }
   }
 });
+
+client.on("voiceStateUpdate", handleVcJoin);
+client.on("voiceStateUpdate", handleVcLeave);
 
 export { FILE_TYPE, client, commands, actions };
 client.login(process.env.DISCORD_TOKEN);
