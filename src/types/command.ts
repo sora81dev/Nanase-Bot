@@ -33,17 +33,13 @@ interface Command {
 }
 
 interface ButtonCommand {
-    data: {
-        action: string;
-    };
+    action: string;
 
     value: Record<string, any>;
 }
 
 interface ModalCommand {
-    data: {
-        action: string;
-    };
+    action: string;
 
     value: Record<string, any>;
 }
