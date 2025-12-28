@@ -35,13 +35,13 @@ interface Command {
 interface ButtonCommand {
     action: string;
 
-    value: Record<string, any>;
+    value?: Record<string, any>;
 }
 
 interface ModalCommand {
     action: string;
 
-    value: Record<string, any>;
+    value?: Record<string, any>;
 }
 
 export type { Command, ButtonCommand, ModalCommand };
