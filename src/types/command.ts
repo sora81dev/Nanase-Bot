@@ -35,8 +35,6 @@ interface Command {
 interface ButtonCommand {
     data: {
         action: string;
-        flags: number;
-        defer?: boolean;
     };
 
     value: Record<string, any>;
@@ -45,8 +43,6 @@ interface ButtonCommand {
 interface ModalCommand {
     data: {
         action: string;
-        flags?: number;
-        defer?: boolean;
     };
 
     value: Record<string, any>;
