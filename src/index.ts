@@ -11,7 +11,7 @@ import { Action, Actions } from "./types/action";
 import dotenv from "dotenv";
 import fs from "fs";
 
-import { startMemberCountJob } from "./jobs/updateMemberCount";
+import { updateMemberCount } from "./jobs/updateMemberCount";
 
 dotenv.config({ path: ".env" });
 
@@ -91,11 +91,7 @@ client.once("ready", async () => {
   console.log("Bot is ready!");
   console.log("");
 
-  // Cron Job
-  console.log("Starting cron jobs...");
-  startMemberCountJob(client);
-  console.log("Cron jobs started!");
-  console.log("");
+  await updateMemberCount(client);
 
   return client.user?.setActivity("with Discord.js", { type: 0 });
 });
@@ -223,6 +219,27 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       });
     }
   }
+});
+
+// メンバー数更新
+client.on("guildMemberAdd", async (member) => {
+  const time = Date.now();
+  const date = new Date(time);
+
+  // 学生ロールを付与
+  member.roles.add("1454446371221536788");
+
+  // 第1期生ロールを付与
+  if (date.getFullYear() == 2025) {
+    member.roles.add("1454661774576980090");
+  }
+
+  await updateMemberCount(client);
+});
+
+// メンバー数更新
+client.on("guildMemberRemove", async (member) => {
+  await updateMemberCount(client);
 });
 
 export { FILE_TYPE, client, commands, actions };
