@@ -14,6 +14,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 import { updateMemberCount } from "./jobs/updateMemberCount";
+import { handleVcLogger } from "./handlers/events/vs-logger.js";
 
 dotenv.config({ path: ".env" });
 
@@ -217,8 +218,10 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => { 
   }
 });
 
+client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
+
 // メンバー数更新
 client.on("guildMemberAdd", async (member) => {
   const time = Date.now();
