@@ -162,9 +162,11 @@ client.on("guildMemberAdd", async (member) => {
     member.roles.add("1454099602641780737");
   }
 
-  // 第1期生ロールを付与
+  // 年に応じたロールを付与
   if (date.getFullYear() == 2025) {
     member.roles.add("1454661774576980090");
+  } else if (date.getFullYear() == 2026) {
+    member.roles.add("1455864840630308925");
   }
 
   await updateMemberCount(client);
