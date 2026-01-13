@@ -14,7 +14,7 @@ export default async function noticeNewRecruit(
         ? "同好会"
         : "その他";
 
-  const channel = client.channels.cache.get("1454109906545414185");
+  const channel = client.channels.cache.get("1453750689393283143");
   if (!channel || !channel.isSendable()) return;
 
   try {
