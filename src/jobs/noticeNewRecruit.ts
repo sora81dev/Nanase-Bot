@@ -6,7 +6,7 @@ export default async function noticeNewRecruit(
 ) {
   const name = thread.name;
 
-  const channel = client.channels.cache.get("1453750689393283143");
+  const channel = client.channels.cache.get("1461005041409327463");
   if (!channel || !channel.isSendable()) return;
 
   try {
