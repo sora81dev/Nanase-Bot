@@ -179,7 +179,7 @@ client.on("guildMemberRemove", async (member) => {
 });
 
 client.on("threadCreate", async (thread, newlyCreated) => {
-  if (thread.parentId === "1459199432519057587") {
+  if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
     noticeNewRecruit(client, thread);
   }
