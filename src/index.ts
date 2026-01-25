@@ -11,7 +11,7 @@ import { Action, Actions } from "./types/action";
 import { handleVcJoin } from "./handlers/events/vc/join";
 import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
-import { updateMemberCount } from "./jobs/updateMemberCount";
+import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
 import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
@@ -53,6 +53,7 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
+  await firstJob(client);
   await updateMemberCount(client);
 
   return client.user?.setActivity("with Discord.js", { type: 0 });
