@@ -150,7 +150,6 @@ client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
-// メンバー数更新
 client.on("guildMemberAdd", async (member) => {
   const time = Date.now();
   const date = new Date(time);
@@ -169,8 +168,6 @@ client.on("guildMemberAdd", async (member) => {
   } else if (date.getFullYear() == 2026) {
     member.roles.add("1455864840630308925");
   }
-
-  await updateMemberCount(client);
 });
 
 // メンバー数更新
@@ -182,6 +179,16 @@ client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
     noticeNewRecruit(client, thread);
+  }
+});
+
+client.on("guildMemberUpdate", async (oldMember, newMember) => {
+  //　学生ロールの付与を検知して学生数カウントを更新
+  if (
+    !oldMember.roles.cache.has("1454446371221536788") &&
+    newMember.roles.cache.has("1454446371221536788")
+  ) {
+    await updateMemberCount(client);
   }
 });
 
