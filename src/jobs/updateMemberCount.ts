@@ -12,19 +12,19 @@ export async function updateMemberCount(client: Client) {
 
     const guild = client.guilds.cache.get(GUILD_ID);
     if (!guild) {
-      console.error("⚠️ Guild not found");
+      console.error("[ERROR] Guild not found");
       return;
     }
 
     const channel = guild.channels.cache.get(CHANNEL_ID);
     if (!channel || !channel.isTextBased()) {
-      console.error("⚠️ Channel not found or not a text channel");
+      console.error("[ERROR] Channel not found or not a text channel");
       return;
     }
 
     const studentRole = guild.roles.cache.get("1454446371221536788");
     if (!studentRole) {
-      console.error("⚠️ Student role not found");
+      console.error("[ERROR] Student role not found");
       return;
     }
 
