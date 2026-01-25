@@ -183,7 +183,7 @@ client.on("threadCreate", async (thread, newlyCreated) => {
 });
 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
-  console.log("[info] Detect guildMemberUpdate");
+  console.log("[INFO]  Detect guildMemberUpdate");
 
   //　学生ロールの付与を検知して学生数カウントを更新
   if (
