@@ -6,7 +6,10 @@ on:
 
 jobs:
   deploy:
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: self-hosted
+    container:
+      images: ubuntu:22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
