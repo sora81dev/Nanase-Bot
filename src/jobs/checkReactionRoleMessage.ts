@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 
-const reactionRoleChannelID = process.env["REACTIONROLE_CHANNELID"]!;
+const reactionRoleChannelID = process.env["REACTIONROLE_CHANNEL_ID"]!;
 const botID = process.env["BOT_ID"]!;
 
 export default async function checkReactionRoleMessage(
@@ -13,7 +13,7 @@ export default async function checkReactionRoleMessage(
       await channel.fetch();
     }
 
-    if (!('send' in channel)) {
+    if (!("send" in channel)) {
       throw new Error("This channel can't send msg");
     }
 
