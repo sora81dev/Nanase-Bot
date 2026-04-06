@@ -6,18 +6,13 @@ on:
 
 jobs:
   deploy:
-    if: github.event.pull_request.head.repo.fork == false
     runs-on: self-hosted
-    container:
-      images: ubuntu:22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Upadaate Service
+      - name: Deploy
         run: |
-          echo "Release ${{ github.event.release.tag_name}} detected"
+          set -e
+          echo "Release ${{ github.event.release.tag_name }} detected"
           cd /home/sora81dev/discord-bot/nanase-bot
-          git reset --hard HEAD
-          git pull origin main
+          git fetch --all --tags
+          git checkout ${{ github.event.release.tag_name }}
           docker compose up -d --build
