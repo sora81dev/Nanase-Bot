@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Upadaate Service
+      - name: Upadate Service
         run: |
           echo "Release ${{ github.event.release.tag_name}} detected"
           cd /home/sora81dev/discord-bot/nanase-bot
