@@ -232,7 +232,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
   // ReactionRole: ロール付与
   if (message.id === reactionRoleMessage) {
     try {
-      await addReactionRole(member, reaction.emoji.identifier);
+      await addReactionRole(member, reaction.emoji.name);
     } catch (e) {
       console.error(e);
     }
@@ -254,7 +254,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
   // ReactionRole: ロール剥奪
   if (message.id === reactionRoleMessage) {
     try {
-      await removeReactionRole(member, reaction.emoji.identifier);
+      await removeReactionRole(member, reaction.emoji.name);
     } catch (e) {
       console.error(e);
       // この先通知処理も追加
