@@ -16,10 +16,10 @@ export default async function addReactionRole(
 
   if (emoji === "🔔") {
     await member.roles.add(notifierRole);
-    console.log(`[INFO]  : addReactionRole <BELL>}`);
+    console.log(`[INFO]  : addReactionRole <NOTIFIER>}`);
     return;
   } else if (emoji === "🔉") {
     await member.roles.add(VCRole);
-    console.log(`[INFO]  : addReactionRole <SOUND>`);
+    console.log(`[INFO]  : addReactionRole <VC>`);
   }
 }

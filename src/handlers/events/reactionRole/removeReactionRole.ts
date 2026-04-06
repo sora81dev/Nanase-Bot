@@ -16,10 +16,10 @@ export default async function removeReactionRole(
 
   if (emoji === "🔔") {
     await member.roles.remove(notifierRole);
-    console.log(`[INFO]  : removeReactionRole <BELL>`);
+    console.log(`[INFO]  : removeReactionRole <NOTIFIER>`);
     return;
   } else if (emoji === "🔉") {
     await member.roles.remove(VCRole);
-    console.log(`[INFO]  : removeReactionRole <SOUND>`);
+    console.log(`[INFO]  : removeReactionRole <VC>`);
   }
 }
