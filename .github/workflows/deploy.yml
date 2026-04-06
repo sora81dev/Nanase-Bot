@@ -1,0 +1,19 @@
+name: Deploy to Server
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upadaate Service
+        run: |
+          echo "Release ${{ github.event.release.tag_name}} detected"
+          cd /home/sora81dev/discord-bot/nanase-bot
+          git pull origin main
+          docker compose up -d --build
