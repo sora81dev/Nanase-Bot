@@ -13,6 +13,10 @@ export default async function checkReactionRoleMessage(
       await channel.fetch();
     }
 
+    if (!('send' in channel)) {
+      throw new Error("This channel can't send msg");
+    }
+
     const messages = await channel.messages.fetch({ limit: 10 });
 
     const targetMessage = messages.find((m) => {
