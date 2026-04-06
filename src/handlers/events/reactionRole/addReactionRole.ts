@@ -10,11 +10,16 @@ export default async function addReactionRole(
   const notifierRole = process.env["NOTIFIER_ROLE_ID"]!;
   const VCRole = process.env["VC_ROLE_ID"]!;
 
-if (!member || !emoji) return;
+  console.log(`[INFO]  : addReactionRole Called`);
 
-  if (emoji === "bell") {
+  if (!member || !emoji) return;
+
+  if (emoji === "🔔") {
     await member.roles.add(notifierRole);
-  } else if (emoji === "sound") {
+    console.log(`[INFO]  : addReactionRole <NOTIFIER>}`);
+    return;
+  } else if (emoji === "🔉") {
     await member.roles.add(VCRole);
+    console.log(`[INFO]  : addReactionRole <VC>`);
   }
 }
