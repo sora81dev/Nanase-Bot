@@ -6,7 +6,6 @@ import {
   ChannelType,
   Colors,
   ButtonBuilder,
-  ButtonStyle,
   PermissionFlagsBits,
 } from "discord.js";
 import { createButton } from "../libs/button";
@@ -163,4 +162,3 @@ export default {
     return;
   },
 } as Command;
-
