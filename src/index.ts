@@ -19,8 +19,9 @@ import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
-import { runSafely, addRoleSafely } from "./utils/safe";
+import { runSafely } from "./utils/safe";
 import guildMemberAdd from "./handlers/events/guildMemberAdd";
+import guildMemberRemove from "./handlers/events/guildMemberRemove";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -220,11 +221,7 @@ client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
 client.on("guildMemberAdd", guildMemberAdd);
-
-// メンバー数更新
-client.on("guildMemberRemove", async (member) => {
-  await updateMemberCount(client);
-});
+client.on("guildMemberRemove", guildMemberRemove);
 
 client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
