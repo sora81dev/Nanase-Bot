@@ -13,7 +13,6 @@ import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions, loadEvents } from "./utils/loader";
-import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
@@ -216,28 +215,6 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
 client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
-
-client.on("guildMemberUpdate", async (oldMember, newMember) => {
-  console.log("[INFO]  Detect guildMemberUpdate");
-  console.log("-> NEW MEMBER");
-  console.log(
-    `   -> hasStudentRole: ${newMember.roles.cache.has("1454446371221536788")}`,
-  );
-  console.log("-> OLD MEMBER");
-  console.log(
-    `   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`,
-  );
-
-  //　学生ロールの付与、剥奪を検知して学生数カウントを更新
-  if (
-    (!oldMember.roles.cache.has("1454446371221536788") &&
-      newMember.roles.cache.has("1454446371221536788")) ||
-    (oldMember.roles.cache.has("1454446371221536788") &&
-      !newMember.roles.cache.has("1454446371221536788"))
-  ) {
-    await updateMemberCount(client);
-  }
-});
 
 export { FILE_TYPE, client, commands, actions };
 client.login(env.tokens.discordToken).catch((error) => {
