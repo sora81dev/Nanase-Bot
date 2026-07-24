@@ -8,7 +8,6 @@ import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions, loadEvents } from "./utils/loader";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import { env } from "./configs/env";
-import { runtimeConfig } from "./configs/runtimeConfig";
 import { runSafely } from "./utils/safe";
 import { commandRegister } from "./utils/register";
 
@@ -53,9 +52,9 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
-  await runSafely("Initial member fetch", () => firstJob(client));
-  await runSafely("Initial member count update", () =>
-    updateMemberCount(client),
+  await runSafely("Initial member fetch", async () => firstJob());
+  await runSafely("Initial member count update", async () =>
+    updateMemberCount(),
   );
 
   await runSafely("Reaction role message check", async () => {

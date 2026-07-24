@@ -1,12 +1,11 @@
-import { Client } from "discord.js";
-import { getMemberStatus } from "../utils/getMemberStatus";
+import { client } from "..";
 
 const CHANNEL_ID = "1454473598973509697";
 const GUILD_ID = "1452263053180534806";
 
 let membersFetched = false;
 
-export async function updateMemberCount(client: Client) {
+export async function updateMemberCount() {
   console.log("[INFO]  Starting member count job...");
 
   try {
@@ -32,7 +31,7 @@ export async function updateMemberCount(client: Client) {
 
     if (!membersFetched) {
       console.log("[INFO]  Member cache is not fetched. Creating...");
-      await firstJob(client);
+      await firstJob();
     }
 
     const memberCount = studentRole.members.size;
@@ -44,7 +43,7 @@ export async function updateMemberCount(client: Client) {
   }
 }
 
-export async function firstJob(client: Client) {
+export async function firstJob() {
   console.log("[INFO]  Starting first job...");
 
   const guild = await client.guilds.fetch(GUILD_ID);
