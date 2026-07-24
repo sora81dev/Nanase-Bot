@@ -10,6 +10,7 @@ import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
 import { runSafely } from "./utils/safe";
+import { commandRegister } from "./utils/register";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -45,17 +46,9 @@ client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
   await runSafely("Registering commands", async () => {
-    const data: Record<string, any>[] = new Array();
-
-    for (const commandName in commands) {
-      console.warn(`  Registering command: ${commandName}`);
-      data.push(commands[commandName].data);
-    }
-
-    await client.application?.commands.set(data as any);
-
-    console.log("Commands registered successfully!");
+    commandRegister();
   });
+
   console.log("");
   console.log("Bot is ready!");
   console.log("");
