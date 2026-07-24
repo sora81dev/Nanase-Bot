@@ -5,7 +5,6 @@ import {
   ButtonInteraction,
   Interaction,
   CacheType,
-  GuildMember,
 } from "discord.js";
 import { Command, ModalCommand, ButtonCommand } from "./types/command";
 import { Action, Actions } from "./types/action";
@@ -21,6 +20,7 @@ import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
 import { run } from "node:test";
+import { runSafely, addRoleSafely } from "./utils/safe";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -48,26 +48,6 @@ const client = new Client({
 });
 
 let reactionRoleMessage: string = "";
-
-async function runSafely(label: string, task: () => Promise<void>) {
-  try {
-    await task();
-  } catch (error) {
-    console.error(`[ERROR] ${label}:`, error);
-  }
-}
-
-async function addRoleSafely(
-  member: GuildMember,
-  roleId: string,
-  label: string,
-) {
-  try {
-    await member.roles.add(roleId);
-  } catch (error) {
-    console.error(`[ERROR] Failed to add ${label} role (${roleId}):`, error);
-  }
-}
 
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
