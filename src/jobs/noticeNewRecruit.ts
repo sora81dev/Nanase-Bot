@@ -1,6 +1,11 @@
-import { Client, EmbedBuilder, ThreadChannel } from "discord.js";
+import { EmbedBuilder, ThreadChannel } from "discord.js";
 
-async function sendSafely(target: { send: (payload: any) => Promise<unknown> }, payload: any, label: string) {
+import { client } from "..";
+async function sendSafely(
+  target: { send: (payload: any) => Promise<unknown> },
+  payload: any,
+  label: string,
+) {
   try {
     await target.send(payload);
   } catch (error) {
@@ -8,13 +13,7 @@ async function sendSafely(target: { send: (payload: any) => Promise<unknown> }, 
   }
 }
 
-export default async function noticeNewRecruit(
-  client: Client,
-  thread: ThreadChannel,
-) {
-  const name = thread.name;
-
-  const channel = client.channels.cache.get("1461005041409327463");
+export default async function noticeNewRecruit(thread: ThreadChannel) {
   if (!channel || !channel.isSendable()) return;
 
   try {
