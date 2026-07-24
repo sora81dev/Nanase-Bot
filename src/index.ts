@@ -9,7 +9,7 @@ import { loadCommands, loadActions, loadEvents } from "./utils/loader";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import { env } from "./configs/env";
 import { runSafely } from "./utils/safe";
-import { commandRegister } from "./utils/register";
+import { commandRegister } from "./jobs/register";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
