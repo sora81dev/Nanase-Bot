@@ -1,5 +1,7 @@
-import { Client } from "discord.js";
+import { client } from "..";
+
 import { env } from "./../configs/env";
+import { runtimeConfig } from "../configs/runtimeConfig";
 
 const REACTION_ROLE_MESSAGE = [
   "リアクションしてロールを付与しよう！",
@@ -9,9 +11,9 @@ const REACTION_ROLE_MESSAGE = [
   "> VCに参加したい人向け！",
 ].join("\n");
 
-export default async function checkReactionRoleMessage(
-  client: Client,
-): Promise<string | null> {
+export default async function checkReactionRoleMessage(): Promise<
+  string | null
+> {
   const botID = process.env["BOT_ID"];
 
   if (!env.channelID.reactionRole || !botID) {
@@ -47,7 +49,11 @@ export default async function checkReactionRoleMessage(
     }
 
     const sentMessage = await channel.send(REACTION_ROLE_MESSAGE);
-    return sentMessage.id;
+    if (!sentMessage.id) {
+      console.error("This channel can't send msg");
+    }
+
+    runtimeConfig.reactionRoleMessageId = sentMessage.id;
   }
 
   console.error("Reaction role channel is not a text channel");

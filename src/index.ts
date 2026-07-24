@@ -59,12 +59,7 @@ client.once("clientReady", async () => {
   );
 
   await runSafely("Reaction role message check", async () => {
-    const result = await checkReactionRoleMessage(client);
-    if (!result) {
-      console.error("This channel can't send msg");
-      return;
-    }
-    runtimeConfig.reactionRoleMessageId = result;
+    checkReactionRoleMessage();
   });
 
   await runSafely("Setting bot activity", async () => {
