@@ -46,8 +46,6 @@ const client = new Client({
   intents: CLIENT_INTENTS,
 });
 
-let reactionRoleMessage: string = "";
-
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
