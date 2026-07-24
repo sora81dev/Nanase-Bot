@@ -12,16 +12,12 @@ import { handleVcJoin } from "./handlers/events/vc/join";
 import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
-import { loadCommands, loadActions } from "./utils/loader";
+import { loadCommands, loadActions, loadEvents } from "./utils/loader";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
-import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
-import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
 import { runSafely } from "./utils/safe";
-import guildMemberAdd from "./handlers/events/guildMemberAdd";
-import guildMemberRemove from "./handlers/events/guildMemberRemove";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -41,6 +37,7 @@ let actions: Actions = { button: {}, modal: {} };
 
 commands = loadCommands(BASE_DIR, FILE_TYPE);
 actions = loadActions(BASE_DIR, FILE_TYPE);
+loadEvents(BASE_DIR + "/handlers", FILE_TYPE);
 
 console.log("Registering commands...");
 
@@ -220,9 +217,6 @@ client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
-client.on("guildMemberAdd", guildMemberAdd);
-client.on("guildMemberRemove", guildMemberRemove);
-
 client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
@@ -253,9 +247,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     await updateMemberCount(client);
   }
 });
-
-client.on("messageReactionAdd", onMessageReactionAdd);
-client.on("messageReactionRemove", onMessageReactionRemove);
 
 export { FILE_TYPE, client, commands, actions };
 client.login(env.tokens.discordToken).catch((error) => {

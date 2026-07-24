@@ -3,7 +3,10 @@ import path from "path";
 import { Command } from "../types/command.js";
 import { Action, Actions } from "../types/action";
 
-export function loadCommands(BASE_DIR: string, FILE_TYPE: string): { [key: string]: Command } {
+export function loadCommands(
+  BASE_DIR: string,
+  FILE_TYPE: string,
+): { [key: string]: Command } {
   console.log("FileType: ", FILE_TYPE);
   console.log("Base Directory: ", BASE_DIR);
   console.log("Fetching command...");
@@ -11,11 +14,11 @@ export function loadCommands(BASE_DIR: string, FILE_TYPE: string): { [key: strin
   const commands: { [key: string]: Command } = {};
 
   const commandFiles = fs
-    .readdirSync(path.resolve(BASE_DIR, 'commands'))
+    .readdirSync(path.resolve(BASE_DIR, "commands"))
     .filter((file) => file.endsWith(FILE_TYPE));
 
   for (const file of commandFiles) {
-    const reqPath = path.resolve(BASE_DIR, 'commands', file);
+    const reqPath = path.resolve(BASE_DIR, "commands", file);
     const command = require(reqPath).default as Command;
     console.warn(`  Load: ${command.data.name}`);
     commands[command.data.name] = command;
@@ -34,12 +37,12 @@ export function loadActions(BASE_DIR: string, FILE_TYPE: string): Actions {
 
   for (const folder of folders) {
     const actionFiles = fs
-      .readdirSync(path.resolve(BASE_DIR, 'handlers', folder))
+      .readdirSync(path.resolve(BASE_DIR, "handlers", folder))
       .filter((file) => file.endsWith(FILE_TYPE));
     console.log(`  Handler Type: ${folder}`);
 
     for (const file of actionFiles) {
-      const reqPath = path.resolve(BASE_DIR, 'handlers', folder, file);
+      const reqPath = path.resolve(BASE_DIR, "handlers", folder, file);
       const action = require(reqPath).default as Action<any>;
       console.log(`    Load: ${action.data.action}`);
       actions[folder][action.data.action] = action;
@@ -53,4 +56,15 @@ export function loadActions(BASE_DIR: string, FILE_TYPE: string): Actions {
   console.log("");
 
   return actions;
+}
+
+export function loadEvents(BASE_DIR: string, FILE_TYPE: string): void {
+  const eventFiles = fs
+    .readdirSync(path.resolve(BASE_DIR, "events"))
+    .filter((file) => file.endsWith(FILE_TYPE));
+
+  for (const file of eventFiles) {
+    const reqPath = path.resolve(BASE_DIR, "events", file);
+    import(reqPath);
+  }
 }

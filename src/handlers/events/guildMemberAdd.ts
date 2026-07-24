@@ -1,7 +1,10 @@
 import type { GuildMember } from "discord.js";
 import { addRoleSafely } from "../../utils/safe";
+import { client } from "../..";
 
-export default async function guildMemberAdd(member: GuildMember) {
+client.on("guildMemberAdd", handler);
+
+async function handler(member: GuildMember) {
   const time = Date.now();
   const date = new Date(time);
 

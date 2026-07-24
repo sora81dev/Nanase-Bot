@@ -7,8 +7,11 @@ import type {
 
 import removeReactionRole from "../../services/reactionRole/removeReactionRole";
 import { runtimeConfig } from "../../configs/runtimeConfig";
+import { client } from "../..";
 
-export default async function onMessageReactionRemove(
+client.on("onMessageReactionRemove", handler);
+
+async function handler(
   reaction: MessageReaction | PartialMessageReaction,
   user: User | PartialUser,
 ) {

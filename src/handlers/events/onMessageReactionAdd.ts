@@ -7,8 +7,11 @@ import type {
 
 import addReactionRole from "../../services/reactionRole/addReactionRole";
 import { runtimeConfig } from "../../configs/runtimeConfig";
+import { client } from "../..";
 
-export default async function onMessageReactionAdd(
+client.on("onMessageReactionAdd", handler);
+
+async function handler(
   reaction: MessageReaction | PartialMessageReaction,
   user: User | PartialUser,
 ) {
