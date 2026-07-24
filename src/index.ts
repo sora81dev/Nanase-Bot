@@ -47,6 +47,8 @@ const client = new Client({
   intents: CLIENT_INTENTS,
 });
 
+module.exports = client;
+
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
