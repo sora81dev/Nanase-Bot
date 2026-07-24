@@ -26,6 +26,6 @@ async function handler(
     (oldMember.roles.cache.has("1454446371221536788") &&
       !newMember.roles.cache.has("1454446371221536788"))
   ) {
-    await updateMemberCount(client);
+    await updateMemberCount();
   }
 }
