@@ -1,13 +1,6 @@
-import {
-  Client,
-  GatewayIntentBits,
-  ModalSubmitInteraction,
-  ButtonInteraction,
-  Interaction,
-  CacheType,
-} from "discord.js";
-import { Command, ModalCommand, ButtonCommand } from "./types/command";
-import { Action, Actions } from "./types/action";
+import { Client, GatewayIntentBits } from "discord.js";
+import { Command } from "./types/command";
+import { Actions } from "./types/action";
 import { handleVcJoin } from "./handlers/events/vc/join";
 import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
@@ -45,6 +38,8 @@ const client = new Client({
 });
 
 module.exports = client;
+module.exports = commands;
+module.exports = actions;
 
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
@@ -82,134 +77,6 @@ client.once("clientReady", async () => {
   await runSafely("Setting bot activity", async () => {
     client.user?.setActivity("with Discord.js", { type: 0 });
   });
-});
-
-function logAndSendError(interaction: any, message: string, err?: any) {
-  console.error(err);
-  return (async () => {
-    try {
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: message,
-          ephemeral: true,
-        } as any);
-      } else if (typeof interaction.reply === "function") {
-        await interaction.reply({ content: message, ephemeral: true } as any);
-      }
-    } catch (e) {
-      console.error("Failed to send error message to interaction", e);
-    }
-  })();
-}
-
-client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
-  try {
-    // コマンド
-    if (interaction.isCommand()) {
-      const { commandName } = interaction;
-      const command: Command | undefined = commands[commandName];
-      if (!command) {
-        console.error(`Command ${commandName} not found`);
-        await interaction.followUp("This command does not exist!");
-        return;
-      }
-
-      const flags = command.data.flags || 0;
-      if (command.data.defer != false) await interaction.deferReply({ flags });
-
-      console.log(`Executing command: ${commandName}`);
-      await command.execute(interaction as any);
-      return;
-    }
-
-    // ボタン
-    if (interaction.isButton()) {
-      const { customId } = interaction;
-      let command: ButtonCommand;
-      try {
-        const parsed = JSON.parse(customId);
-        if (
-          typeof parsed !== "object" ||
-          parsed === null ||
-          typeof parsed.action !== "string"
-        ) {
-          console.error(`Invalid button customId format: ${customId}`);
-          await interaction.deferUpdate();
-          return;
-        }
-        command = parsed as ButtonCommand;
-      } catch {
-        console.error(`Failed to parse button customId: ${customId}`);
-        await interaction.deferUpdate();
-        return;
-      }
-      const actionName = command.action;
-      const action: Action<ButtonInteraction> | undefined =
-        actions.button[actionName];
-      if (!action) {
-        console.error(`Action ${actionName} not found`);
-        await interaction.followUp("This action does not exist!");
-        return;
-      }
-
-      const flags = action.data.flags || 0;
-      if (action.data.defer) await interaction.deferReply({ flags });
-
-      console.log(`Executing action: ${actionName}`);
-      await action.execute(interaction as ButtonInteraction);
-      return;
-    }
-
-    // モーダル
-    if (interaction.isModalSubmit()) {
-      const { customId } = interaction;
-      let command: ModalCommand;
-      try {
-        const parsed = JSON.parse(customId);
-        if (
-          typeof parsed !== "object" ||
-          parsed === null ||
-          typeof parsed.action !== "string"
-        ) {
-          console.error(`Invalid modal customId format: ${customId}`);
-          await interaction.reply({
-            content: "invalid request",
-            ephemeral: true,
-          });
-          return;
-        }
-        command = parsed as ModalCommand;
-      } catch {
-        console.error(`Failed to parse modal customId: ${customId}`);
-        await interaction.reply({
-          content: "invalid request",
-          ephemeral: true,
-        });
-        return;
-      }
-      const actionName = command.action;
-      const action: Action<ModalSubmitInteraction> | undefined =
-        actions.modal[actionName];
-      if (!action) {
-        console.error(`Action ${actionName} not found`);
-        await interaction.followUp("This action does not exist!");
-        return;
-      }
-
-      const flags: number = action.data.flags || 0;
-      if (action.data.defer) await interaction.deferReply({ flags });
-
-      console.log(`Executing action: ${actionName}`);
-      await action.execute(interaction as ModalSubmitInteraction);
-      return;
-    }
-  } catch (error) {
-    await logAndSendError(
-      interaction,
-      "There was an error while executing this interaction!",
-      error,
-    );
-  }
 });
 
 client.on("voiceStateUpdate", handleVcLogger);
