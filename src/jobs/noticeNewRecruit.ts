@@ -1,6 +1,8 @@
 import { EmbedBuilder, ThreadChannel } from "discord.js";
 
 import { client } from "..";
+import { env } from "./../configs/env";
+
 async function sendSafely(
   target: { send: (payload: any) => Promise<unknown> },
   payload: any,
@@ -14,6 +16,7 @@ async function sendSafely(
 }
 
 export default async function noticeNewRecruit(thread: ThreadChannel) {
+  const channel = client.channels.cache.get(env.channelID.recruitNotice);
   if (!channel || !channel.isSendable()) return;
 
   try {

@@ -1,6 +1,7 @@
 import type { GuildMember } from "discord.js";
 import { addRoleSafely } from "../../utils/safe";
 import { client } from "../..";
+import { env } from "../../configs/env";
 
 client.on("guildMemberAdd", handler);
 
@@ -10,10 +11,7 @@ async function handler(member: GuildMember) {
 
   if (member.user.bot) {
     // BOTロールを付与
-    await addRoleSafely(member, "1454099602641780737", "bot");
-
-    // 学生ロールを付与
-    await addRoleSafely(member, "1454099602641780737", "student");
+    await addRoleSafely(member, env.roleID.bot, "bot");
   }
 
   // 年に応じたロールを付与

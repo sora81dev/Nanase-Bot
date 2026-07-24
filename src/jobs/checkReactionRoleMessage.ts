@@ -14,9 +14,7 @@ const REACTION_ROLE_MESSAGE = [
 export default async function checkReactionRoleMessage(): Promise<
   string | null
 > {
-  const botID = process.env["BOT_ID"];
-
-  if (!env.channelID.reactionRole || !botID) {
+  if (!env.channelID.reactionRole || !env.info.botID) {
     console.error("REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
     return null;
   }
@@ -37,7 +35,7 @@ export default async function checkReactionRoleMessage(): Promise<
 
     const targetMessage = messages.find(
       (m) =>
-        m.author.id === botID &&
+        m.author.id === env.info.botID &&
         m.content.includes("リアクションしてロールを付与しよう！"),
     );
 
