@@ -14,12 +14,12 @@ export default async function checkReactionRoleMessage(
 ): Promise<string | null> {
   const botID = process.env["BOT_ID"];
 
-  if (!env.channel_id.reactionRole || !botID) {
+  if (!env.channelID.reactionRole || !botID) {
     console.error("REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
     return null;
   }
 
-  const channel = await client.channels.fetch(env.channel_id.reactionRole);
+  const channel = await client.channels.fetch(env.channelID.reactionRole);
 
   if (channel && channel.isTextBased()) {
     if (channel.partial) {
