@@ -217,15 +217,6 @@ client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
-client.on("threadCreate", async (thread, newlyCreated) => {
-  if (thread.parentId === "1454093291325886658") {
-    console.log("[noticeNewRecruit] Detect new Recruit");
-    await runSafely("Notice new recruit thread", () =>
-      noticeNewRecruit(client, thread),
-    );
-  }
-});
-
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   console.log("[INFO]  Detect guildMemberUpdate");
   console.log("-> NEW MEMBER");
