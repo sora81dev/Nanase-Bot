@@ -19,7 +19,6 @@ import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
 import { env } from "./configs/env";
 import { runtimeConfig } from "./configs/runtimeConfig";
-import { run } from "node:test";
 import { runSafely, addRoleSafely } from "./utils/safe";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
